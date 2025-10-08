@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -13,9 +12,9 @@ body {
     margin: 0;
     padding: 20px;
     min-height: 100vh;
-    background: #111;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a0a1a 100%);
     color: #fff;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
 }
 .container {
     max-width: 500px;
@@ -23,100 +22,96 @@ body {
     text-align: center;
 }
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 28px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #ff4dff, #9a00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 #pulse-circle {
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 180px;
     border-radius: 50%;
     background: linear-gradient(135deg, #ff4dff, #9a00ff);
-    box-shadow: 0 0 50px rgba(154, 0, 255, 0.7);
+    box-shadow: 0 0 60px rgba(154, 0, 255, 0.8);
     margin: 20px auto;
-    transition: transform 0.2s ease;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+#pulse-circle::before {
+    content: '';
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: #111;
 }
 #bpm { 
-    font-size: 48px; 
+    font-size: 54px; 
     font-weight: bold; 
-    margin: 20px 0;
+    margin: 0;
     color: #ff4dff;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 0 20px rgba(255, 77, 255, 0.5);
 }
 #status {
-    font-size: 16px;
+    font-size: 15px;
     margin: 15px 0;
-    padding: 10px;
-    background: #222;
-    border-radius: 8px;
+    padding: 12px;
+    background: rgba(34, 34, 34, 0.6);
+    border-radius: 10px;
     min-height: 60px;
-    line-height: 1.5;
+    line-height: 1.6;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(154, 0, 255, 0.3);
 }
 button {
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 15px 35px;
+    font-size: 17px;
     margin: 10px 5px;
     cursor: pointer;
     border: none;
-    border-radius: 8px;
-    background-color: #9a00ff;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #9a00ff, #c715ff);
     color: #fff;
-    transition: background 0.2s;
-    font-weight: bold;
+    transition: all 0.3s;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(154, 0, 255, 0.4);
 }
 button:hover:not(:disabled) { 
-    background-color: #c715ff; 
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(154, 0, 255, 0.6);
 }
 button:disabled { 
-    background-color: #444; 
+    background: #444;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.5;
+    box-shadow: none;
 }
 #torch-btn {
-    background-color: #ff9500;
+    background: linear-gradient(135deg, #ff9500, #ffb84d);
     display: none;
 }
 #torch-btn:hover:not(:disabled) {
-    background-color: #ffb84d;
+    box-shadow: 0 6px 20px rgba(255, 149, 0, 0.6);
 }
 #torch-btn.active {
-    background-color: #44ff44;
-}
-#debug-log {
-    margin-top: 20px;
-    padding: 15px;
-    background: #1a1a1a;
-    border-radius: 8px;
-    font-size: 11px;
-    text-align: left;
-    max-height: 200px;
-    overflow-y: auto;
-    font-family: monospace;
-}
-.log-entry {
-    margin: 3px 0;
-    padding: 3px;
-    border-left: 3px solid #9a00ff;
-    padding-left: 8px;
-}
-.log-error {
-    border-left-color: #ff4444;
-    color: #ff8888;
-}
-.log-success {
-    border-left-color: #44ff44;
-    color: #88ff88;
-}
-.log-warning {
-    border-left-color: #ffaa00;
-    color: #ffcc66;
+    background: linear-gradient(135deg, #44ff44, #66ff66);
 }
 video {
     width: 100%;
-    max-width: 300px;
+    max-width: 250px;
     height: auto;
     margin: 10px auto;
     display: block;
     border: 2px solid #9a00ff;
-    border-radius: 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(154, 0, 255, 0.3);
 }
 #video-container {
     display: none;
@@ -125,66 +120,106 @@ video {
     display: flex;
     justify-content: space-around;
     margin: 20px 0;
-    font-size: 14px;
+    font-size: 13px;
 }
 .stat-item {
-    padding: 10px;
-    background: #222;
-    border-radius: 5px;
+    padding: 12px;
+    background: rgba(34, 34, 34, 0.6);
+    border-radius: 10px;
     flex: 1;
     margin: 0 5px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(154, 0, 255, 0.2);
+}
+.stat-item div:first-child {
+    opacity: 0.7;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+.stat-item div:last-child {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff4dff;
 }
 .instruction {
-    background: #1a3a1a;
+    background: rgba(26, 58, 26, 0.4);
     border: 2px solid #44ff44;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 15px;
     margin: 15px 0;
-    font-size: 14px;
-    line-height: 1.6;
+    font-size: 13px;
+    line-height: 1.8;
+    backdrop-filter: blur(10px);
+}
+.chart-container {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(34, 34, 34, 0.6);
+    border-radius: 12px;
+    display: none;
+    border: 1px solid rgba(154, 0, 255, 0.2);
+}
+#waveform {
+    width: 100%;
+    height: 100px;
+    background: #0a0a0a;
+    border-radius: 8px;
+}
+.pulse-animation {
+    animation: pulse 0.3s ease-out;
+}
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); box-shadow: 0 0 80px rgba(154, 0, 255, 1); }
+    100% { transform: scale(1); }
 }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Pulse Monitor</h1>
-<div id="pulse-circle"></div>
-<div id="bpm">-- BPM</div>
-<div id="status">Нажмите Старт для начала</div>
-
-<button id="start-btn">Старт</button>
-<button id="torch-btn">Фонарик</button>
-<button id="stop-btn" style="display:none;">Стоп</button>
-
-<div class="instruction" style="display:none;" id="instruction">
-    <strong>Как измерить пульс:</strong><br>
-    1. Положите палец на заднюю камеру<br>
-    2. Полностью закройте камеру и вспышку<br>
-    3. Держите неподвижно 10-15 секунд<br>
-    4. Яркость должна быть 150-220
-</div>
-
-<div class="stats" style="display:none;" id="stats">
-    <div class="stat-item">
-        <div>Яркость</div>
-        <div id="brightness-val">0</div>
+    <h1>💓 Pulse Monitor</h1>
+    
+    <div id="pulse-circle">
+        <div id="bpm">--</div>
     </div>
-    <div class="stat-item">
-        <div>Качество</div>
-        <div id="quality-val">--</div>
-    </div>
-    <div class="stat-item">
-        <div>Пики</div>
-        <div id="peaks-val">0</div>
-    </div>
-</div>
+    
+    <div id="status">Нажмите Старт для начала измерения</div>
 
-<div id="video-container">
-    <video id="video" autoplay playsinline muted></video>
-</div>
+    <button id="start-btn">🚀 Старт</button>
+    <button id="torch-btn">💡 Фонарик</button>
+    <button id="stop-btn" style="display:none;">⏹ Стоп</button>
 
-<div id="debug-log"></div>
+    <div class="instruction" style="display:none;" id="instruction">
+        <strong>📱 Как измерить пульс:</strong><br>
+        1. Положите палец на заднюю камеру<br>
+        2. Полностью закройте камеру и вспышку<br>
+        3. Держите неподвижно 15-20 секунд<br>
+        4. Яркость должна быть 150-220
+    </div>
+
+    <div class="stats" style="display:none;" id="stats">
+        <div class="stat-item">
+            <div>Яркость</div>
+            <div id="brightness-val">0</div>
+        </div>
+        <div class="stat-item">
+            <div>Качество</div>
+            <div id="quality-val">--</div>
+        </div>
+        <div class="stat-item">
+            <div>Пики</div>
+            <div id="peaks-val">0</div>
+        </div>
+    </div>
+
+    <div class="chart-container" id="chart-container">
+        <canvas id="waveform"></canvas>
+    </div>
+
+    <div id="video-container">
+        <video id="video" autoplay playsinline muted></video>
+    </div>
 
 </div>
 
@@ -193,50 +228,110 @@ const video = document.getElementById('video');
 const videoContainer = document.getElementById('video-container');
 const circle = document.getElementById('pulse-circle');
 const bpmDisplay = document.getElementById('bpm');
-const statusDisplay = document.
-getElementById('status');
+const statusDisplay = document.getElementById('status');
 const startBtn = document.getElementById('start-btn');
 const stopBtn = document.getElementById('stop-btn');
 const torchBtn = document.getElementById('torch-btn');
-const debugLog = document.getElementById('debug-log');
 const statsDiv = document.getElementById('stats');
 const instructionDiv = document.getElementById('instruction');
 const brightnessVal = document.getElementById('brightness-val');
 const qualityVal = document.getElementById('quality-val');
 const peaksVal = document.getElementById('peaks-val');
+const chartContainer = document.getElementById('chart-container');
+const waveformCanvas = document.getElementById('waveform');
+const waveCtx = waveformCanvas.getContext('2d');
 
 let stream = null;
 let videoTrack = null;
 let isProcessing = false;
 let brightnessHistory = [];
+let filteredHistory = [];
 let lastPeakTime = 0;
 let pulseIntervals = [];
 let peakCount = 0;
 let torchEnabled = false;
+let frameCount = 0;
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-function log(message, type) {
-    const entry = document.createElement('div');
-    const className = type === 'error' ? 'log-error' : type === 'success' ? 'log-success' : type === 'warning' ? 'log-warning' : '';
-    entry.className = 'log-entry ' + className;
-    const time = new Date().toLocaleTimeString();
-    entry.textContent = '[' + time + '] ' + message;
-    debugLog.insertBefore(entry, debugLog.firstChild);
-    console.log(message);
+waveformCanvas.width = waveformCanvas.offsetWidth * 2;
+waveformCanvas.height = 200;
+
+function drawWaveform() {
+    if (filteredHistory.length < 2) return;
+    
+    waveCtx.fillStyle = '#0a0a0a';
+    waveCtx.fillRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+    
+    const data = filteredHistory.slice(-150);
+    const step = waveformCanvas.width / data.length;
+    
+    const min = Math.min(...data);
+    const max = Math.max(...data);
+    const range = max - min || 1;
+    
+    waveCtx.beginPath();
+    waveCtx.strokeStyle = '#9a00ff';
+    waveCtx.lineWidth = 3;
+    waveCtx.lineCap = 'round';
+    waveCtx.lineJoin = 'round';
+    
+    data.forEach((val, i) => {
+        const x = i * step;
+        const y = waveformCanvas.height - ((val - min) / range) * (waveformCanvas.height - 40) - 20;
+        
+        if (i === 0) {
+            waveCtx.moveTo(x, y);
+        } else {
+            waveCtx.lineTo(x, y);
+        }
+    });
+    
+    waveCtx.stroke();
+    
+    waveCtx.shadowBlur = 15;
+    waveCtx.shadowColor = '#9a00ff';
+    waveCtx.stroke();
+    waveCtx.shadowBlur = 0;
 }
 
-log('Protocol: ' + window.location.protocol);
-log('HTTPS: ' + (window.location.protocol === 'https:' ? 'YES' : 'NO'), 
-    window.location.protocol === 'https:' ? 'success' : 'error');
+function simpleMovingAverage(data, windowSize) {
+    if (data.length < windowSize) return data[data.length - 1];
+    
+    const recent = data.slice(-windowSize);
+    return recent.reduce((a, b) => a + b) / windowSize;
+}
 
-if (!navigator.mediaDevices) {
-    log('mediaDevices не доступен', 'error');
-    statusDisplay.textContent = 'Ваш браузер не поддерживает камеру';
-    startBtn.disabled = true;
-} else {
-    log('getUserMedia доступен', 'success');
+function bandpassFilter(value, history) {
+    const alpha = 0.9;
+    
+    if (history.length === 0) return value;
+    
+    const lastFiltered = history[history.length - 1];
+    return alpha * lastFiltered + (1 - alpha) * value;
+}
+
+function detectPeaks(data, threshold) {
+    if (data.length < 10) return false;
+    
+    const recentData = data.slice(-10);
+    const current = recentData[recentData.length - 1];
+    const prev = recentData[recentData.length - 2];
+    const prev2 = recentData[recentData.length - 3];
+    const prev3 = recentData[recentData.length - 4];
+    
+    const mean = recentData.reduce((a, b) => a + b) / recentData.length;
+    const variance = recentData.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / recentData.length;
+    const stdDev = Math.sqrt(variance);
+    
+    if (stdDev < threshold) return false;
+    
+    if (prev > current && prev > prev2 && prev > prev3 && prev > mean + stdDev * 0.3) {
+        return true;
+    }
+    
+    return false;
 }
 
 function enableTorch(enable) {
@@ -244,100 +339,88 @@ function enableTorch(enable) {
     
     const capabilities = videoTrack.getCapabilities();
     if (!capabilities.torch) {
-        log('Фонарик не поддерживается на этом устройстве', 'warning');
+        statusDisplay.textContent = 'Фонарик не поддерживается. Включите вспышку вручную!';
         return;
     }
     
     videoTrack.applyConstraints({
         advanced: [{ torch: enable }]
     })
-    .then(function() {
+    .then(() => {
         torchEnabled = enable;
         if (enable) {
             torchBtn.classList.add('active');
-            torchBtn.textContent = 'Выкл фонарик';
-            log('Фонарик включен', 'success');
+            torchBtn.textContent = '💡 Выкл фонарик';
         } else {
             torchBtn.classList.remove('active');
-            torchBtn.textContent = 'Вкл фонарик';
-            log('Фонарик выключен');
+            torchBtn.textContent = '💡 Вкл фонарик';
         }
     })
-    .catch(function(e) {
-        log('Ошибка фонарика: ' + e.message, 'error');
+    .catch(e => {
+        console.error('Ошибка фонарика:', e);
     });
 }
 
-torchBtn.addEventListener('click', function() {
+torchBtn.addEventListener('click', () => {
     enableTorch(!torchEnabled);
 });
 
-startBtn.addEventListener('click', function() {
-    log('=== СТАРТ ===');
+startBtn.addEventListener('click', () => {
     startBtn.disabled = true;
     statusDisplay.textContent = 'Запрашиваем камеру...';
     
     const constraints = {
         video: {
             facingMode: 'environment',
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
+            width: { ideal: 1920 },
+            height: { ideal: 1080 }
         },
         audio: false
     };
     
     navigator.mediaDevices.getUserMedia(constraints)
-        .then(function(mediaStream) {
-            log('Камера получена', 'success');
+        .then(mediaStream => {
             stream = mediaStream;
             videoTrack = stream.getVideoTracks()[0];
-            
-            const settings = videoTrack.getSettings();
-            log('Камера: ' + settings.width + 'x' + settings.height);
             
             video.srcObject = stream;
             videoContainer.style.display = 'block';
             statsDiv.style.display = 'flex';
             instructionDiv.style.display = 'block';
+            chartContainer.style.display = 'block';
             
             const capabilities = videoTrack.getCapabilities();
             if (capabilities.torch) {
                 torchBtn.style.display = 'inline-block';
-                log('Фонарик доступен!', 'success');
-                setTimeout(function() {
+                setTimeout(() => {
                     enableTorch(true);
                 }, 500);
             } else {
-                log('Фонарик НЕ доступен', 'warning');
                 statusDisplay.textContent = 'Включите вспышку вручную!';
             }
             
-            video.onloadedmetadata = function() {
-                log('Видео загружено');
-            };
-            
-            video.onplay = function() {
-                log('Видео запущено', 'success');
+            video.onplay = () => {
                 statusDisplay.textContent = 'Положите палец на камеру и вспышку!';
                 startBtn.style.display = 'none';
                 stopBtn.style.display = 'inline-block';
                 isProcessing = true;
                 
                 brightnessHistory = [];
+                filteredHistory = [];
                 pulseIntervals = [];
                 peakCount = 0;
                 lastPeakTime = 0;
+                frameCount = 0;
                 
                 processFrame();
             };
             
-            video.play()
-                .catch(function(e) {
-                    log('Ошибка play: ' + e.message, 'error');
-                });
+            video.play().catch(e => {
+                console.error('Ошибка play:', e);
+            });
         })
-        .catch(function(e) {
-            log('ОШИБКА: ' + e.name + ' - ' + e.message, 'error');
+        .catch(e => {
+            console.error('ОШИБКА:', e);
             
             let errorMsg = '';
             if (e.name === 'NotAllowedError') {
@@ -353,8 +436,7 @@ startBtn.addEventListener('click', function() {
         });
 });
 
-stopBtn.addEventListener('click', function() {
-    log('Остановка');
+stopBtn.addEventListener('click', () => {
     isProcessing = false;
     
     if (torchEnabled) {
@@ -362,21 +444,20 @@ stopBtn.addEventListener('click', function() {
     }
     
     if (stream) {
-        stream.getTracks().forEach(function(track) {
-            track.stop();
-        });
+        stream.getTracks().forEach(track => track.stop());
     }
     
     video.srcObject = null;
     videoContainer.style.display = 'none';
     statsDiv.style.display = 'none';
     instructionDiv.style.display = 'none';
+    chartContainer.style.display = 'none';
     torchBtn.style.display = 'none';
     startBtn.style.display = 'inline-block';
     startBtn.disabled = false;
     stopBtn.style.display = 'none';
     statusDisplay.textContent = 'Остановлено';
-    bpmDisplay.textContent = '-- BPM';
+    bpmDisplay.textContent = '--';
 });
 
 function processFrame() {
@@ -386,7 +467,6 @@ function processFrame() {
         if (canvas.width === 0) {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            log('Canvas: ' + canvas.width + 'x' + canvas.height);
         }
         
         try {
@@ -403,97 +483,85 @@ function processFrame() {
             }
             
             const avgBrightness = redSum / pixelCount;
+            frameCount++;
             
             brightnessVal.textContent = Math.round(avgBrightness);
             brightnessHistory.push(avgBrightness);
             
-            if (brightnessHistory.length > 250) {
+            const smoothed = simpleMovingAverage(brightnessHistory, 3);
+            const filtered = bandpassFilter(smoothed, filteredHistory);
+            filteredHistory.push(filtered);
+            
+            if (brightnessHistory.length > 300) {
                 brightnessHistory.shift();
+                filteredHistory.shift();
             }
             
-            if (avgBrightness < 100) {
+            if (frameCount % 2 === 0) {
+                drawWaveform();
+            }
+            
+            if (avgBrightness < 120) {
                 qualityVal.textContent = 'Слабо';
                 qualityVal.style.color = '#ff4444';
-                statusDisplay.textContent = 'Яркость низкая! Прижмите палец сильнее';
+                statusDisplay.textContent = '❌ Яркость низкая! Прижмите палец сильнее';
             } else if (avgBrightness > 240) {
                 qualityVal.textContent = 'Ярко';
                 qualityVal.style.color = '#ffaa00';
-                statusDisplay.textContent = 'Слишком ярко! Ослабьте нажатие';
+                statusDisplay.textContent = '⚠️ Слишком ярко! Ослабьте нажатие';
             } else {
-                qualityVal.textContent = 'Хорошо';
+                qualityVal.textContent = 'Отлично';
                 qualityVal.style.color = '#44ff44';
-                statusDisplay.textContent = 'Отлично! Держите неподвижно...';
+                statusDisplay.textContent = '✅ Отлично! Держите неподвижно...';
             }
             
-            if (brightnessHistory.length >= 30) {
-                const recentData = brightnessHistory.slice(-30);
+            if (filteredHistory.length >= 50) {
+                const isPeak = detectPeaks(filteredHistory, 5);
                 
-                const mean = recentData.reduce(function(a, b) { return a + b; }) / recentData.length;
-                
-                let variance = 0;
-                for (let i = 0; i < recentData.
-                    length; i++) {
-                    variance += Math.pow(recentData[i] - mean, 2);
-                }
-                variance = variance / recentData.length;
-                const stdDev = Math.sqrt(variance);
-                
-                if (stdDev > 2 && brightnessHistory.length > 50) {
-                    const len = brightnessHistory.length;
-                    const current = brightnessHistory[len - 1];
-                    const prev = brightnessHistory[len - 2];
-                    const prev2 = brightnessHistory[len - 3];
-                    const prev3 = brightnessHistory[len - 4];
+                if (isPeak) {
+                    const now = Date.now();
+                    const timeSinceLastPeak = now - lastPeakTime;
                     
-                    if (prev > current && prev > prev2 && prev > prev3) {
-                        const now = Date.now();
-                        const timeSinceLastPeak = now - lastPeakTime;
-                        
-                        if (timeSinceLastPeak > 350 && timeSinceLastPeak < 2000) {
-                            if (lastPeakTime !== 0) {
-                                const interval = timeSinceLastPeak / 1000;
-                                const bpm = 60 / interval;
+                    if (timeSinceLastPeak > 400 && timeSinceLastPeak < 2000) {
+                        if (lastPeakTime !== 0) {
+                            const interval = timeSinceLastPeak / 1000;
+                            const bpm = 60 / interval;
+                            
+                            if (bpm >= 45 && bpm <= 180) {
+                                pulseIntervals.push(interval);
                                 
-                                if (bpm >= 40 && bpm <= 200) {
-                                    pulseIntervals.push(interval);
+                                if (pulseIntervals.length > 8) {
+                                    pulseIntervals.shift();
+                                }
+                                
+                                if (pulseIntervals.length >= 4) {
+                                    const validIntervals = pulseIntervals.slice(-6);
+                                    const avgInterval = validIntervals.reduce((a, b) => a + b) / validIntervals.length;
+                                    const avgBpm = Math.round(60 / avgInterval);
                                     
-                                    if (pulseIntervals.length > 10) {
-                                        pulseIntervals.shift();
-                                    }
+                                    bpmDisplay.textContent = avgBpm;
+                                    peakCount++;
+                                    peaksVal.textContent = peakCount;
                                     
-                                    if (pulseIntervals.length >= 3) {
-                                        const sum = pulseIntervals.reduce(function(a, b) { return a + b; });
-                                        const avgInterval = sum / pulseIntervals.length;
-                                        const avgBpm = Math.round(60 / avgInterval);
-                                        
-                                        bpmDisplay.textContent = avgBpm + ' BPM';
-                                        peakCount++;
-                                        peaksVal.textContent = peakCount;
-                                        
-                                        circle.style.transform = 'scale(1.3)';
-                                        setTimeout(function() {
-                                            circle.style.transform = 'scale(1)';
-                                        }, 200);
-                                        
-                                        log('Пульс: ' + avgBpm + ' BPM');
-                                    }
+                                    circle.classList.add('pulse-animation');
+                                    setTimeout(() => {
+                                        circle.classList.remove('pulse-animation');
+                                    }, 300);
                                 }
                             }
-                            lastPeakTime = now;
                         }
+                        lastPeakTime = now;
                     }
                 }
             }
             
         } catch (e) {
-            log('Ошибка: ' + e.message, 'error');
+            console.error('Ошибка:', e);
         }
     }
     
     requestAnimationFrame(processFrame);
 }
-
-log('Готов к работе', 'success');
 </script>
 
 </body>
